@@ -27,9 +27,8 @@ def weighted_level_generator(state, cum_sum=None, size=None):
     #     return np.searchsorted(cum_sum[:size], n)
     if cum_sum is None:
         cum_sum = np.cumsum(state)
-    n = random.randint(0, cum_sum[-1])
+    n = 1 + random.randint(0, cum_sum[-1])
     return np.searchsorted(cum_sum, n)
-
 
 
 def generate_random_state(children_num_generator, level_generator, num_steps=1, initial_state=None, copy=False):

@@ -1,9 +1,12 @@
 __author__ = 'pmorar'
 
 import unittest
+from mock import patch
+
 import numpy as np
 import numpy.random as random
 import numpy.testing
+
 import src.generator as generator
 
 
@@ -17,7 +20,7 @@ class TestGenerator(unittest.TestCase):
         pos = generator.weighted_level_generator(state)
         self.assertEqual(0, pos)
 
-    def test_weighted_level_generator_never_picks_0_entry_in_end(self):
+    def test_weighted_level_generator_never_picks_trailing_zeros(self):
         for n in xrange(1000):
             state = random.random_integers(1, 10, 10)
             excluded_pos = random.randint(1, 10)
@@ -34,7 +37,7 @@ class TestGenerator(unittest.TestCase):
             self.assertLess(pos, size)
 
     def test_weighted_level_generator_proportions(self):
-        """It might fail with low probability."""
+        #It might fail with low probability.
         state = [1000, 1]
         counts = [0, 0]
         for n in xrange(1000):
@@ -62,6 +65,30 @@ class TestGenerator(unittest.TestCase):
             random.set_state(rand_state)
             cs_pos = generator.weighted_level_generator(state, cum_sum)
             self.assertEqual(pos, cs_pos)
+
+    @patch('src.generator.random')
+    def test_weighted_random_picks_1st_element_with_mock_random(self, mock_random):
+        mock_random.randint.return_value = 0
+        pos = generator.weighted_level_generator(np.arange(1, 10))
+        self.assertEqual(pos, 0)
+
+    @patch('src.generator.random')
+    def test_weighted_random_picks_2nd_element_with_mock_random(self, mock_random):
+        mock_random.randint.return_value = 1
+        pos = generator.weighted_level_generator(np.arange(1, 10))
+        self.assertEqual(pos, 1)
+
+    @patch('src.generator.random')
+    def test_weighted_random_picks_3rd_element_with_mock_random(self, mock_random):
+        mock_random.randint.return_value = 3
+        pos = generator.weighted_level_generator(np.arange(1, 10))
+        self.assertEqual(pos, 2)
+
+    @patch('src.generator.random')
+    def test_weighted_random_picks_3rd_element_with_mock_random2(self, mock_random):
+        mock_random.randint.return_value = 4
+        pos = generator.weighted_level_generator(np.arange(1, 10))
+        self.assertEqual(pos, 2)
 
     def test_generate_random_state_with_last_position(self):
         for steps_num in xrange(5, 100, 5):
@@ -109,6 +136,7 @@ class TestGenerator(unittest.TestCase):
         for n in xrange(10):
             sample = generator.generate_random_state(lambda: 1, lambda x: 1, 1000, state, copy=True)
             numpy.testing.assert_equal(sample[sample != 0], [1, 1001, 1000])
+
 
 
 if __name__ == '__main__':
