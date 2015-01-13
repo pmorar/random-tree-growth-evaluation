@@ -32,7 +32,7 @@ def weighted_level_generator(state, cum_sum=None, size=None):
 
 
 def generate_random_state(children_num_generator, level_generator, num_steps=1, initial_state=None, copy=False):
-    """Generates a random state by iteratively attaching random number of children to a random level.
+    """Generates a random state by iteratively attaching a random number of children to a random level.
 
     Generates a random index of an array state. The probability of the index is proportional to the corresponding value.
     Args:
