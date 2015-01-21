@@ -7,7 +7,7 @@ import numpy as np
 import numpy.random as random
 import numpy.testing
 
-import src.generator as generator
+import rtgenerator.tuple_generator as generator
 
 
 class TestGenerator(unittest.TestCase):
@@ -66,25 +66,25 @@ class TestGenerator(unittest.TestCase):
             cs_pos = generator.weighted_level_generator(state, cum_sum)
             self.assertEqual(pos, cs_pos)
 
-    @patch('src.generator.random')
+    @patch('rtgenerator.generator.random')
     def test_weighted_random_picks_1st_element_with_mock_random(self, mock_random):
         mock_random.randint.return_value = 0
         pos = generator.weighted_level_generator(np.arange(1, 10))
         self.assertEqual(pos, 0)
 
-    @patch('src.generator.random')
+    @patch('rtgenerator.generator.random')
     def test_weighted_random_picks_2nd_element_with_mock_random(self, mock_random):
         mock_random.randint.return_value = 1
         pos = generator.weighted_level_generator(np.arange(1, 10))
         self.assertEqual(pos, 1)
 
-    @patch('src.generator.random')
+    @patch('rtgenerator.generator.random')
     def test_weighted_random_picks_3rd_element_with_mock_random(self, mock_random):
         mock_random.randint.return_value = 3
         pos = generator.weighted_level_generator(np.arange(1, 10))
         self.assertEqual(pos, 2)
 
-    @patch('src.generator.random')
+    @patch('rtgenerator.generator.random')
     def test_weighted_random_picks_3rd_element_with_mock_random2(self, mock_random):
         mock_random.randint.return_value = 4
         pos = generator.weighted_level_generator(np.arange(1, 10))

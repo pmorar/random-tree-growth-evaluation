@@ -69,3 +69,7 @@ def generate_random_state(children_num_generator, level_generator, num_steps=1, 
         state[level + 1] += n
 
     return state
+
+def generate_random_state_size(children_num_generator, num_steps):
+    return np.argmin(generate_random_state(children_num_generator, weighted_level_generator,
+                                           num_steps))
