@@ -71,5 +71,8 @@ def generate_random_state(children_num_generator, level_generator, num_steps=1, 
     return state
 
 def generate_random_state_size(children_num_generator, num_steps):
-    return np.argmin(generate_random_state(children_num_generator, weighted_level_generator,
-                                           num_steps))
+    res = generate_random_state(children_num_generator, weighted_level_generator,
+                                           num_steps)
+    if res[-1] != 0:
+        return len(res)
+    return np.argmin(res)
